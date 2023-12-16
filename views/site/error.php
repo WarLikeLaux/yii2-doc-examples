@@ -1,27 +1,25 @@
 <?php
 
-/** @var yii\web\View $this */
-/** @var string $name */
-/** @var string $message */
-/** @var Exception$exception */
-
 use yii\helpers\Html;
+use yii\web\View;
+
+/* @var $this View */
+/* @var $name string */
+/* @var $message string */
+/* @var $exception Exception */
 
 $this->title = $name;
+
+$this->params['body-class'] = 'bg-light'; // Add a custom class to the body for styling
+
 ?>
-<div class="site-error">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 text-center">
+            <h1 class="display-4"><?= Html::encode($name) ?></h1>
+            <p class="lead"><?= nl2br(Html::encode($message)) ?></p>
+            <p class="text-muted">The above error occurred while the web server was processing your request.</p>
+            <?= Html::a('Back to Home', ['site/index'], ['class' => 'btn btn-primary mt-4']) ?>
+        </div>
     </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
 </div>

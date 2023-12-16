@@ -31,13 +31,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <header id="header">
     <?php
+    list($appName, $appVersion) = [Yii::$app->name, Yii::$app->version];
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => "{$appName} ($appVersion)",
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        'options' => [
+            'class' => 'navbar-expand-md navbar-dark bg-dark fixed-top',
+        ]
     ]);
+    $navbarItemsFontSize = Yii::$app->params['navbar.items.font.size'] ?? 16;
+    $currentTime = date('Y-m-d H:i:s');
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav', 'style' => "font-size: {$navbarItemsFontSize}px !important;"],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
@@ -51,7 +56,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
-                    . '</li>'
+                    . '</li>',
+            ['label' => "Time: {$currentTime}"]
         ]
     ]);
     NavBar::end();

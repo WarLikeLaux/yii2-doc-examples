@@ -144,9 +144,21 @@ class SiteController extends Controller
         }
     }
 
+    public function actionOffline()
+    {
+        return $this->render('offline');
+    }
+
     public function actionEntryConfirm($modelJsonString)
     {
         $model = json_decode($modelJsonString);
         return $this->render('entry-confirm', ['model' => $model]);
+    }
+
+    public function actionTestAliases()
+    {
+        $file = Yii::getAlias('@media/text.txt');
+        $content = file_get_contents($file);
+        return $this->render('test-aliases', ['content' => $content]);
     }
 }

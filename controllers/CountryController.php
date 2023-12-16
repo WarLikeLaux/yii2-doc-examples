@@ -13,6 +13,14 @@ use yii\filters\VerbFilter;
  */
 class CountryController extends Controller
 {
+    public $viewPath = '@app/views/country';
+
+    public function init()
+    {
+        parent::init();
+        $this->setViewPath($this->viewPath);
+    }
+
     /**
      * @inheritDoc
      */

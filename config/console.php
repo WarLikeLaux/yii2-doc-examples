@@ -28,6 +28,7 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
+    'enableCoreCommands' => true,
     /*
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.
