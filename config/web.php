@@ -57,6 +57,9 @@ $config = [
     },
     'bootstrap' => [
         'log',
+        function ($app) {
+            Yii::info('Application is initialized.', 'bootstrap');
+        },
         function () {
             return YII_ENV_DEV ? Yii::$app->getModule('debug') : null;
         },
@@ -106,7 +109,7 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['info'],
                     'logFile' => '@app/runtime/logs/info.log',
-                    'categories' => ['afterRequest'],
+                    'categories' => ['afterRequest', 'bootstrap'],
                     'logVars' => [],
                 ],
             ],
