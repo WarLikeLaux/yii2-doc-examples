@@ -16,6 +16,9 @@ class ContactForm extends Model
     public $body;
     public $verifyCode;
 
+    const SCENARIO_GUEST = 'guest';
+    const SCENARIO_USER = 'user';
+
 
     /**
      * @return array the validation rules.
@@ -23,12 +26,10 @@ class ContactForm extends Model
     public function rules()
     {
         return [
-            // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+            [['!name', 'email', 'subject', 'body'], 'required', 'on' => self::SCENARIO_GUEST],
+            [['!name', 'subject', 'body'], 'required', 'on' => self::SCENARIO_USER],
+            ['email', 'email', 'on' => self::SCENARIO_GUEST],
+            ['verifyCode', 'captcha', 'on' => [self::SCENARIO_GUEST, self::SCENARIO_USER]]
         ];
     }
 
@@ -37,9 +38,24 @@ class ContactForm extends Model
      */
     public function attributeLabels()
     {
-        return [
-            'verifyCode' => 'Verification Code',
-        ];
+        switch ($this->scenario) {
+            case self::SCENARIO_GUEST:
+                return [
+                    'name' => \Yii::t('app', 'Your name'),
+                    'email' => \Yii::t('app', 'Your email address'),
+                    'subject' => \Yii::t('app', 'Subject'),
+                    'body' => \Yii::t('app', 'Content'),
+                    'verifyCode' => 'Verification Code',
+                ];
+            default:
+                return [
+                    'name' => \Yii::t('app', 'Your name'),
+                    'email' => \Yii::t('app', 'Your email address'),
+                    'subject' => \Yii::t('app', 'Subject'),
+                    'body' => \Yii::t('app', 'Content'),
+                    'verifyCode' => 'Verification Code',
+                ];
+        }
     }
 
     /**

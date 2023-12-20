@@ -50,7 +50,7 @@ class SiteController extends Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'fixedVerifyCode' => YII_ENV_DEV ? 'testme' : null,
             ],
         ];
     }
@@ -106,11 +106,16 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
+        $scenario = Yii::$app->user->isGuest ? ContactForm::SCENARIO_GUEST : ContactForm::SCENARIO_USER;
+        $model = new ContactForm(['scenario' => $scenario]);
+        if (Yii::$app->request->isPost) {
+            $model->name = \Yii::$app->request->post('ContactForm')['name'];
+            // $model->attributes = Yii::$app->request->post('ContactForm');
+            $model->load(Yii::$app->request->post());
+            if ($model->validate()) {
+                Yii::$app->session->setFlash('contactFormSubmitted');
+                return $this->refresh();
+            }
         }
         return $this->render('contact', [
             'model' => $model,

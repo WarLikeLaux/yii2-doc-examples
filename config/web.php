@@ -38,10 +38,14 @@ $config = [
         Yii::info("Request completed with status code {$statusCode}, method: {$method}, URL: {$url}", 'afterRequest');
     },
     'on beforeAction' => function ($event) {
+        $allowedRoutes = [
+            'site/login',
+            'site/contact'
+        ];
         $action = $event->action;
         $controller = $action->controller;
         if (Yii::$app->user->isGuest) {
-            if ($controller->id !== 'site' || $action->id !== 'login') {
+            if (!in_array("{$controller->id}/{$action->id}", $allowedRoutes)) {
                 return $controller->redirect(['site/login']);
             }
         }

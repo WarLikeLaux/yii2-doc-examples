@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
-                    <?= $form->field($model, 'email') ?>
+                    <?= $model->scenario == $model::SCENARIO_GUEST ? $form->field($model, 'email') : '' ?>
 
                     <?= $form->field($model, 'subject') ?>
 
